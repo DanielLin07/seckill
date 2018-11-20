@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<version>5.1.35</version>
 		</dependency>
 
         <!--JSON工具：FastJSON-->
@@ -108,6 +108,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.8.1</version>
+		</dependency>
+
+        <!--权限管理工具：Shiro-->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.4.0</version>
 		</dependency>
 
 	</dependencies>

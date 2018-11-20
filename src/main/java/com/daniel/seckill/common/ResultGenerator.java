@@ -22,19 +22,19 @@ public class ResultGenerator {
 
 
     /**
-     * 生成带有message信息响应成功Result
+     * 生成带有msg信息响应成功Result
      *
-     * @param message 响应信息
+     * @param msg 响应信息
      * @return 响应成功Result
      */
-    public static <T> Result<T> genSuccessResult(String message) {
+    public static <T> Result<T> genSuccessResult(String msg) {
 
         Result<T> result = new Result<>();
         result.setCode(CodeMsg.SUCCESS.code);
-        if (StringUtils.isBlank(message)) {
-            message = CodeMsg.SUCCESS.msg;
+        if (StringUtils.isBlank(msg)) {
+            msg = CodeMsg.SUCCESS.msg;
         }
-        result.setMessage(message);
+        result.setMsg(msg);
         return result;
     }
 
@@ -54,13 +54,13 @@ public class ResultGenerator {
     /**
      * 生成带有data数据的响应成功Result
      *
-     * @param message 响应信息
+     * @param msg 响应信息
      * @param data    响应数据
      * @return 响应成功Result
      */
-    public static <T> Result<T> genFullSuccessResult(String message, T data) {
+    public static <T> Result<T> genFullSuccessResult(String msg, T data) {
 
-        Result<T> result = genSuccessResult(message);
+        Result<T> result = genSuccessResult(msg);
         result.setData(data);
         return result;
     }
@@ -78,19 +78,19 @@ public class ResultGenerator {
 
 
     /**
-     * 生成带有message信息响应失败Result
+     * 生成带有msg信息响应失败Result
      *
-     * @param message 响应信息
+     * @param msg 响应信息
      * @return 响应失败Result
      */
-    public static Result genFailResult(String message) {
+    public static Result genFailResult(String msg) {
 
         Result result = new Result();
         result.setCode(CodeMsg.SERVER_ERROR.code);
-        if (StringUtils.isBlank(message)) {
-            message = CodeMsg.SERVER_ERROR.msg;
+        if (StringUtils.isBlank(msg)) {
+            msg = CodeMsg.SERVER_ERROR.msg;
         }
-        result.setMessage(message);
+        result.setMsg(msg);
         return result;
     }
 
