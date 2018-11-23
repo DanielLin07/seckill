@@ -44,7 +44,6 @@ public class LoginController {
      */
     @Autowired
     public LoginController(JedisAdapter jedisAdapter, UserService userService) {
-
         this.jedisAdapter = jedisAdapter;
         this.userService = userService;
     }

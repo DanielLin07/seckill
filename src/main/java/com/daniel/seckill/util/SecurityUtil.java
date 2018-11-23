@@ -53,7 +53,6 @@ public class SecurityUtil {
      * @return 加密后的密码
      */
     public static String encryptPassword(String password, String username, String salt) {
-
         return new SimpleHash(ALGORITHM_NAME, password, username + salt, HASH_ITERATIONS).toHex();
     }
 
@@ -64,7 +63,6 @@ public class SecurityUtil {
      * @return UUID字符串
      */
     public static String randomUUID() {
-
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

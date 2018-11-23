@@ -25,7 +25,6 @@ public class JedisAdapter {
 
     @Autowired
     public JedisAdapter(JedisPool jedisPool) {
-
         this.jedisPool = jedisPool;
     }
 

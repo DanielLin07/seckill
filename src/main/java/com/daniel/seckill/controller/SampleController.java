@@ -30,10 +30,10 @@ public class SampleController {
 
     @RequestMapping("set")
     @ResponseBody
-        public Result testSet() {
+    public Result testSet() {
+
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
-
             jedisAdapter.set("books1", "python1");
             return ResultGenerator.genSuccessResult();
         } catch (Exception e) {
@@ -45,9 +45,9 @@ public class SampleController {
     @RequestMapping("get")
     @ResponseBody
     public Result testGet() {
+
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
-
             String data = jedisAdapter.get("books1");
             System.out.println("data:" + data);
             return ResultGenerator.genFullSuccessResult(data);

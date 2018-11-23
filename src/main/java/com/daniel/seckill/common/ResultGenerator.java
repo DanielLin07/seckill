@@ -16,7 +16,6 @@ public class ResultGenerator {
      * @return 默认Result
      */
     public static Result genSuccessResult() {
-
         return new Result(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg);
     }
 
@@ -46,7 +45,6 @@ public class ResultGenerator {
      * @return 响应成功Result
      */
     public static <T> Result<T> genFullSuccessResult(T data) {
-
         return new Result<>(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg, data);
     }
 
@@ -72,7 +70,6 @@ public class ResultGenerator {
      * @return 默认Result
      */
     public static Result genFailResult() {
-
         return new Result(CodeMsg.SERVER_ERROR.code, CodeMsg.SERVER_ERROR.msg);
     }
 

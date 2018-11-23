@@ -29,7 +29,6 @@ public class UserService {
      * @return 成功则返回对应用户
      */
     public User queryById(int id) {
-
         return userDAO.queryById(id);
     }
 
@@ -41,7 +40,6 @@ public class UserService {
      * @return 成功则返回对应用户
      */
     public User queryByUsername(String username) {
-
         return userDAO.queryByUsername(username);
     }
 }
