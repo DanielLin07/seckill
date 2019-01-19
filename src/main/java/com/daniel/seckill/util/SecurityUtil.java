@@ -25,7 +25,6 @@ public class SecurityUtil {
      */
     private static final int HASH_ITERATIONS = 2;
 
-
     /**
      * 根据用户名以及密码生成加密对，加密算法采用两次MD5加密
      *
@@ -34,7 +33,6 @@ public class SecurityUtil {
      * @return 加密对
      */
     public static Map<String, String> genEncryptPasswordAndSalt(String username, String password) {
-
         Map<String, String> result = new HashMap<>(2);
         String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
         String encodedPassword = encryptPassword(password, username, salt);
@@ -42,7 +40,6 @@ public class SecurityUtil {
         result.put("salt", salt);
         return result;
     }
-
 
     /**
      * 生成加密后的密码
@@ -55,7 +52,6 @@ public class SecurityUtil {
     public static String encryptPassword(String password, String username, String salt) {
         return new SimpleHash(ALGORITHM_NAME, password, username + salt, HASH_ITERATIONS).toHex();
     }
-
 
     /**
      * 生成随机UUID字符串
