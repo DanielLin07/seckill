@@ -19,7 +19,6 @@ public class ResultGenerator {
         return new Result(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg);
     }
 
-
     /**
      * 生成带有msg信息响应成功Result
      *
@@ -27,7 +26,6 @@ public class ResultGenerator {
      * @return 响应成功Result
      */
     public static <T> Result<T> genSuccessResult(String msg) {
-
         Result<T> result = new Result<>();
         result.setCode(CodeMsg.SUCCESS.code);
         if (StringUtils.isBlank(msg)) {
@@ -36,7 +34,6 @@ public class ResultGenerator {
         result.setMsg(msg);
         return result;
     }
-
 
     /**
      * 生成带有data数据的响应成功Result
@@ -48,7 +45,6 @@ public class ResultGenerator {
         return new Result<>(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg, data);
     }
 
-
     /**
      * 生成带有data数据的响应成功Result
      *
@@ -57,12 +53,10 @@ public class ResultGenerator {
      * @return 响应成功Result
      */
     public static <T> Result<T> genFullSuccessResult(String msg, T data) {
-
         Result<T> result = genSuccessResult(msg);
         result.setData(data);
         return result;
     }
-
 
     /**
      * 生成响应失败的默认Result
@@ -73,7 +67,6 @@ public class ResultGenerator {
         return new Result(CodeMsg.SERVER_ERROR.code, CodeMsg.SERVER_ERROR.msg);
     }
 
-
     /**
      * 生成带有msg信息响应失败Result
      *
@@ -81,7 +74,6 @@ public class ResultGenerator {
      * @return 响应失败Result
      */
     public static Result genFailResult(String msg) {
-
         Result result = new Result();
         result.setCode(CodeMsg.SERVER_ERROR.code);
         if (StringUtils.isBlank(msg)) {
