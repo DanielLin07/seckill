@@ -53,7 +53,6 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.jedis.pool.max-wait}")
     private long maxWaitMillis;
 
-
     /**
      * 将JedisPool注入Spring容器，交给Spring管理
      *
@@ -61,7 +60,6 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean
     public JedisPool redisPoolFactory() {
-
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);

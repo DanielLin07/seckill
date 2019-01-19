@@ -24,7 +24,6 @@ public interface UserDAO {
      */
     User queryById(int id);
 
-
     /**
      * 根据用户名获取对应用户
      *
@@ -33,14 +32,12 @@ public interface UserDAO {
      */
     User queryByUsername(String username);
 
-
     /**
      * 获取所有用户
      *
      * @return 所有用户
      */
     List<User> queryList();
-
 
     /**
      * 添加新用户

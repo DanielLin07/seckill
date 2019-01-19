@@ -18,21 +18,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("samples")
 public class SampleController {
 
-    private RedisTemplate redisTemplate;
-
     private JedisAdapter jedisAdapter;
 
     @Autowired
-    public SampleController(RedisTemplate redisTemplate, JedisAdapter jedisAdapter) {
-        this.redisTemplate = redisTemplate;
+    public SampleController(JedisAdapter jedisAdapter) {
         this.jedisAdapter = jedisAdapter;
     }
 
     @RequestMapping("set")
     @ResponseBody
     public Result testSet() {
-
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
             jedisAdapter.set("books1", "python1");
             return ResultGenerator.genSuccessResult();
@@ -45,8 +40,6 @@ public class SampleController {
     @RequestMapping("get")
     @ResponseBody
     public Result testGet() {
-
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         try {
             String data = jedisAdapter.get("books1");
             System.out.println("data:" + data);

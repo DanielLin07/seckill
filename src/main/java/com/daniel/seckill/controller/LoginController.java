@@ -8,6 +8,7 @@ import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.service.UserService;
 import com.daniel.seckill.util.SecurityUtil;
+import com.daniel.seckill.vo.LoginVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,6 @@ public class LoginController {
 
     private UserService userService;
 
-
     /**
      * Spring官方推荐：使用构造方法注入Bean
      *
@@ -48,7 +48,6 @@ public class LoginController {
         this.userService = userService;
     }
 
-
     /**
      * 跳转至登录界面
      *
@@ -59,29 +58,27 @@ public class LoginController {
         return "login";
     }
 
-
     /**
      * 执行用户登录
      *
-     * @param user 用户信息
+     * @param loginVO 登录用户信息
      * @return 登录结果
      */
     @RequestMapping("/doLogin")
     @ResponseBody
-    public Result doLogin(HttpServletResponse response, User user) {
-
-        if (user == null) {
+    public Result doLogin(HttpServletResponse response, LoginVO loginVO) {
+        if (loginVO == null) {
             return ResultGenerator.genFailResult("用户信息不能为空！");
         }
 
         // 根据用户名查询出的User，如果为null，则该用户不存在
-        User confirmUser = userService.queryByUsername(user.getUsername());
+        User confirmUser = userService.queryByUsername(loginVO.getUsername());
         if (confirmUser == null) {
             return ResultGenerator.genFailResult("用户名不存在！");
         }
 
         // 判断加密后的密码与数据库中存放的密码是否一致
-        if (!SecurityUtil.encryptPassword(user.getPassword(), user.getUsername(), confirmUser.getSalt())
+        if (!SecurityUtil.encryptPassword(loginVO.getPassword(), loginVO.getUsername(), confirmUser.getSalt())
                 .equals(confirmUser.getPassword())) {
             return ResultGenerator.genFailResult("用户名与密码不匹配！");
         }
@@ -89,13 +86,11 @@ public class LoginController {
         String token = SecurityUtil.randomUUID();
         JSONObject data = new JSONObject();
         data.put("token", token);
-        // addCookie(response, token, confirmUser);
+        addCookie(response, token, confirmUser);
         return ResultGenerator.genFullSuccessResult("登录成功！", data);
     }
 
-
     private void addCookie(HttpServletResponse response, String token, User user) {
-
         jedisAdapter.set("user:token:" + token, JSON.toJSONString(user));
         Cookie cookie = new Cookie("token", token);
         cookie.setMaxAge(3600 * 24);
