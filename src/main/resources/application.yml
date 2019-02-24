@@ -1,0 +1,29 @@
+spring:
+  # Datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password:
+
+  # Thymeleaf
+  thymeleaf:
+    encoding: UTF-8
+
+  # Redis
+  redis:
+    database: 0
+    host:
+    port:
+    password:
+    timeout: 5000
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
+# MyBatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.daniel.seckill.model
