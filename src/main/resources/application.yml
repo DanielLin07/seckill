@@ -1,20 +1,20 @@
 spring:
-  # Datasource
+  # Datasource配置
   datasource:
     url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
-    password:
+    password: 675844
 
-  # Thymeleaf
+  # Thymeleaf配置
   thymeleaf:
     encoding: UTF-8
 
-  # Redis
+  # Redis配置
   redis:
     database: 0
-    host:
-    port:
-    password:
+    host: 47.107.227.25
+    port: 6379
+    password: 675844
     timeout: 5000
     jedis:
       pool:
@@ -23,7 +23,9 @@ spring:
         max-idle: 8
         min-idle: 0
 
-# MyBatis
+# MyBatis配置
 mybatis:
+  # Mapper映射文件的位置
   mapper-locations: classpath:mapper/*.xml
+  # 包下所有类的别名，配置别名为了在对象映射文件中接收参数类型和返回参数类型时省略包路径
   type-aliases-package: com.daniel.seckill.model
