@@ -2,8 +2,8 @@ spring:
   # Datasource配置
   datasource:
     url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username: root
-    password: 675844
+    username: 
+    password: 
 
   # Thymeleaf配置
   thymeleaf:
@@ -12,9 +12,9 @@ spring:
   # Redis配置
   redis:
     database: 0
-    host: 47.107.227.25
-    port: 6379
-    password: 675844
+    host: 
+    port: 
+    password: 
     timeout: 5000
     jedis:
       pool:
