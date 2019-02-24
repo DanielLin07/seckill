@@ -1,11 +1,9 @@
 package com.daniel.seckill.controller;
 
 import com.daniel.seckill.common.Result;
-import com.daniel.seckill.common.ResultGenerator;
+import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.redis.JedisAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,10 +28,10 @@ public class SampleController {
     public Result testSet() {
         try {
             jedisAdapter.set("books1", "python1");
-            return ResultGenerator.genSuccessResult();
+            return ResultBuilder.buildSuccessResult();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultGenerator.genFailResult();
+            return ResultBuilder.buildFailResult();
         }
     }
 
@@ -43,10 +41,10 @@ public class SampleController {
         try {
             String data = jedisAdapter.get("books1");
             System.out.println("data:" + data);
-            return ResultGenerator.genFullSuccessResult(data);
+            return ResultBuilder.buildFullSuccessResult(data);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultGenerator.genFailResult();
+            return ResultBuilder.buildFailResult();
         }
     }
 }

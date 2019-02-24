@@ -15,7 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * User的方法参数处理器
+ * User的方法参数处理器，当Controller方法中含有User类型的参数时则会执行
  *
  * @author DanielLin07
  * @date 2019/1/19 17:21
@@ -26,6 +26,12 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Autowired
     private UserService userService;
 
+    /**
+     * 当方法参数类型有User类型才会执行resolveArgument
+     *
+     * @param methodParameter 方法参数
+     * @return 如果是User类型则返回true
+     */
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         Class<?> clazz = methodParameter.getParameterType();
@@ -42,8 +48,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private String getCookieValue(HttpServletRequest request, String cookieKey) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for(Cookie cookie : cookies) {
-                if(cookie.getName().equals(cookieKey)) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieKey)) {
                     return cookie.getValue();
                 }
             }

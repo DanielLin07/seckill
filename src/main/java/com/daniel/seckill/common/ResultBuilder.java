@@ -8,14 +8,14 @@ import org.apache.commons.lang3.StringUtils;
  * @author DanielLin07
  * @date 2018/11/10 14:00
  */
-public class ResultGenerator {
+public class ResultBuilder {
 
     /**
      * 生成响应成功的默认Result
      *
      * @return 默认Result
      */
-    public static Result genSuccessResult() {
+    public static Result buildSuccessResult() {
         return new Result(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg);
     }
 
@@ -25,7 +25,7 @@ public class ResultGenerator {
      * @param msg 响应信息
      * @return 响应成功Result
      */
-    public static <T> Result<T> genSuccessResult(String msg) {
+    public static <T> Result<T> buildSuccessResult(String msg) {
         Result<T> result = new Result<>();
         result.setCode(CodeMsg.SUCCESS.code);
         if (StringUtils.isBlank(msg)) {
@@ -41,7 +41,7 @@ public class ResultGenerator {
      * @param data 响应数据
      * @return 响应成功Result
      */
-    public static <T> Result<T> genFullSuccessResult(T data) {
+    public static <T> Result<T> buildFullSuccessResult(T data) {
         return new Result<>(CodeMsg.SUCCESS.code, CodeMsg.SUCCESS.msg, data);
     }
 
@@ -52,8 +52,8 @@ public class ResultGenerator {
      * @param data    响应数据
      * @return 响应成功Result
      */
-    public static <T> Result<T> genFullSuccessResult(String msg, T data) {
-        Result<T> result = genSuccessResult(msg);
+    public static <T> Result<T> buildFullSuccessResult(String msg, T data) {
+        Result<T> result = buildSuccessResult(msg);
         result.setData(data);
         return result;
     }
@@ -63,7 +63,7 @@ public class ResultGenerator {
      *
      * @return 默认Result
      */
-    public static Result genFailResult() {
+    public static Result buildFailResult() {
         return new Result(CodeMsg.SERVER_ERROR.code, CodeMsg.SERVER_ERROR.msg);
     }
 
@@ -73,7 +73,7 @@ public class ResultGenerator {
      * @param msg 响应信息
      * @return 响应失败Result
      */
-    public static Result genFailResult(String msg) {
+    public static Result buildFailResult(String msg) {
         Result result = new Result();
         result.setCode(CodeMsg.SERVER_ERROR.code);
         if (StringUtils.isBlank(msg)) {

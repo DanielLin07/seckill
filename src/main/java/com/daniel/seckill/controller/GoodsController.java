@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("goods")
-public class GoodController {
+public class GoodsController {
 
     @RequestMapping("toList")
-    public String testGet(Model model, User user) {
+    public String toList(Model model, User user) {
         model.addAttribute("user", user);
         return "goods_list";
     }
