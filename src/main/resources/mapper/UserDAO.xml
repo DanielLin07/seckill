@@ -5,18 +5,22 @@
 
 <mapper namespace="com.daniel.seckill.dao.UserDAO">
 
+    <!-- 根据用户Id获取对应用户 -->
     <select id="queryById" parameterType="_int" resultType="User">
         SELECT * FROM user WHERE id= #{id}
     </select>
 
+    <!-- 根据用户名获取对应用户 -->
     <select id="queryByUsername" resultType="User">
         SELECT * FROM user WHERE username= #{username}
     </select>
 
+    <!-- 获取所有用户 -->
     <select id="queryList" resultType="User">
         SELECT * FROM user
     </select>
 
+    <!-- 添加新用户 -->
     <insert id="add" keyProperty="id" parameterType="User" >
         INSERT INTO user(username, password, salt, head_url, register_date, last_login_date, login_count)
         VALUES (#{username},#{password},#{salt},#{headUrl},#{registerDate},#{lastLoginDate},#{loginCount})

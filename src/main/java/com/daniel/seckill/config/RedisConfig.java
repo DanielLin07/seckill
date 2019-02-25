@@ -48,6 +48,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     private int maxIdle;
 
     /**
+     * 最小连接数
+     */
+    @Value("${spring.redis.jedis.pool.min-idle}")
+    private int minIdle;
+
+    /**
      * 最大阻塞等待时间
      */
     @Value("${spring.redis.jedis.pool.max-wait}")
@@ -62,6 +68,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     public JedisPool redisPoolFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMinIdle(minIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         if (StringUtils.isNotBlank(password)) {
             return new JedisPool(jedisPoolConfig, host, port, timeout, password);

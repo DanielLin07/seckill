@@ -27,7 +27,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private UserService userService;
 
     /**
-     * 当方法参数类型有User类型才会执行resolveArgument
+     * 当方法参数类型有User类型才会执行resolveArgument方法
      *
      * @param methodParameter 方法参数
      * @return 如果是User类型则返回true
