@@ -1,6 +1,7 @@
 package com.daniel.seckill.service;
 
 import com.daniel.seckill.dao.GoodsDAO;
+import com.daniel.seckill.model.SeckillGoods;
 import com.daniel.seckill.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class GoodsService {
     /**
      * 根据商品Id获取对应商品
      *
-     * @param id 商品Id
+     * @param goodsId 商品Id
      * @return 成功则返回对应商品
      */
     public GoodsVO queryGoodsVOById(long goodsId) {
@@ -37,5 +38,16 @@ public class GoodsService {
 	public List<GoodsVO> queryListGoodsVO(){
 		return goodsDAO.queryListGoodsVO();
 	}
+
+    /**
+     * 更新秒杀商品的库存
+     *
+     * @param goodsVO 商品
+     */
+	public void updateSeckillGoodsStock(GoodsVO goodsVO, int num) {
+	    SeckillGoods seckillGoods = new SeckillGoods();
+	    seckillGoods.setGoodsId(goodsVO.getId());
+	    goodsDAO.updateSeckillGoodsStock(seckillGoods, num);
+    }
 
 }

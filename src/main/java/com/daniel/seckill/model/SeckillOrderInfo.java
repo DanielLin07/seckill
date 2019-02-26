@@ -6,7 +6,7 @@ package com.daniel.seckill.model;
  * @author DanielLin07
  * @date 2018/11/18 11:31
  */
-public class SeckillOrder {
+public class SeckillOrderInfo {
 
     /**
      * 秒杀订单Id

@@ -8,7 +8,7 @@ import java.util.Date;
  * @author DanielLin07
  * @date 2018/11/18 11:29
  */
-public class Order {
+public class OrderInfo {
 
     /**
      * 订单Id
@@ -46,12 +46,12 @@ public class Order {
     private Double goodsPrice;
 
     /**
-     * 订单渠道
+     * 订单渠道：1-PC，2-Android，3-IOS
      */
     private Integer orderChannel;
 
     /**
-     * 订单状态
+     * 订单状态：0-新创建未支付，1-已支付，2-已发货，3-已收货，4-已退款，5-已完成
      */
     private Integer status;
 

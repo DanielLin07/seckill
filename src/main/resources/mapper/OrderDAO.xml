@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.daniel.seckill.dao.OrderDAO">
+
+    <!-- OrderInfo实体与数据库的映射 -->
+    <resultMap id="OrderInfoMapping" type="OrderInfo">
+        <id column="id" property="id" javaType="long"/>
+        <result column="user_id" property="userId" javaType="long"/>
+        <result column="goods_id" property="goodsId" javaType="long"/>
+        <result column="delivery_address_id" property="deliveryAddressId" javaType="long"/>
+        <result column="goods_name" property="goodsName" javaType="String"/>
+        <result column="goods_count" property="goodsCount" javaType="int"/>
+        <result column="goods_price" property="goodsPrice" javaType="double"/>
+        <result column="order_channel" property="orderChannel" javaType="int"/>
+        <result column="status" property="status" javaType="int"/>
+        <result column="create_date" property="createDate"/>
+        <result column="pay_date" property="payDate"/>
+    </resultMap>
+
+    <!-- SeckillOrderInfo实体与数据库的映射 -->
+    <resultMap id="SeckillOrderInfoMapping" type="SeckillOrderInfo">
+        <id column="id" property="id" javaType="long"/>
+        <result column="user_id" property="userId" javaType="long"/>
+        <result column="order_id" property="orderId" javaType="long"/>
+        <result column="goods_id" property="goodsId" javaType="long"/>
+    </resultMap>
+
+    <!-- 根据用户Id以及商品Id获取订单Id -->
+    <select id="queryByUserIdAndGoodsId" resultMap="OrderInfoMapping">
+        SELECT *
+        FROM order_info
+        WHERE user_id = #{userId} AND goods_id = #{goodsId}
+    </select>
+
+    <!-- 根据用户Id以及商品Id获取秒杀订单Id -->
+    <select id="querySeckillOrderInfoByUserIdAndGoodsId" resultMap="SeckillOrderInfoMapping">
+        SELECT *
+        FROM seckill_order_info
+        WHERE user_id = #{userId} AND goods_id = #{goodsId}
+    </select>
+
+    <!-- 插入新订单 -->
+    <insert id="add" keyProperty="id" parameterType="OrderInfo" >
+        INSERT INTO
+        order_info(user_id, goods_id, delivery_address_id, goods_name, goods_count,
+              goods_price, order_channel, status, create_date, pay_date)
+        VALUES(#{userId}, #{goodsId}, #{deliveryAddressId}, #{goodsName}, #{goodsCount},
+               #{goodsPrice}, #{orderChannel}, #{status}, #{createDate}, #{payDate})
+    </insert>
+
+    <!-- 插入新的秒杀订单 -->
+    <insert id="addSeckillOrderInfo" keyProperty="id" parameterType="SeckillOrderInfo" >
+        INSERT INTO
+        seckill_order_info(user_id, order_id, goods_id)
+        VALUES(#{userId}, #{orderId}, #{goodsId})
+    </insert>
+
+</mapper>

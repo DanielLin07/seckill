@@ -34,13 +34,10 @@ public class GoodsController {
     }
 
     @RequestMapping("toDetail/{goodsId}")
-    public String toDetail(Model model, User user, @PathVariable("goodsId") Long goodsId) {
+    public String toDetail(Model model, User user, @PathVariable("goodsId") long goodsId) {
         model.addAttribute("user", user);
 
         // 根据商品Id查询商品详情
-        if (goodsId == null) {
-            return "goodsList";
-        }
         GoodsVO goodsVO = goodsService.queryGoodsVOById(goodsId);
         model.addAttribute("goodsVO", goodsVO);
 
@@ -58,6 +55,7 @@ public class GoodsController {
         // 秒杀已经结束
         } else if (currentTime > endTime) {
             seckillStatus = 2;
+            remainSeconds = -1;
         // 秒杀正在进行中
         } else {
             seckillStatus = 1;

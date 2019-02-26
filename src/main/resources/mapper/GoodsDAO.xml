@@ -37,4 +37,10 @@
         LEFT JOIN goods g on sg.goods_id = g.id
     </select>
 
+    <update id="updateSeckillGoodsStock">
+        UPDATE seckill_goods
+        SET stock_count = stock_count + #{num}
+        WHERE goods_id = #{seckillGoods.goodsId}
+    </update>
+
 </mapper>

@@ -9,9 +9,10 @@ package com.daniel.seckill.common;
 public enum Constant {
 
     /**
-     * 秒杀还未开始
+     * 秒杀模块 5005XX
      */
-    SUCCESS(200, "SUCCESS"),
+    SECKILL_OVER(500500, "商品秒杀已经结束"),
+    SECKILL_REPEAT(500501, "不能重复秒杀"),
 
     /**
      * 请求无效
