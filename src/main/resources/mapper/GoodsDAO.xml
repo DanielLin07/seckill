@@ -37,6 +37,7 @@
         LEFT JOIN goods g on sg.goods_id = g.id
     </select>
 
+    <!-- 更新秒杀商品的库存 -->
     <update id="updateSeckillGoodsStock">
         UPDATE seckill_goods
         SET stock_count = stock_count + #{num}

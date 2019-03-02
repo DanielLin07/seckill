@@ -31,6 +31,14 @@ public class SeckillController {
     @Autowired
     private SeckillService seckillService;
 
+    /**
+     * 执行秒杀操作
+     *
+     * @param model   model
+     * @param user    用户信息
+     * @param goodsId 商品Id
+     * @return 秒杀结果
+     */
     @RequestMapping("doSeckill")
     public String doSeckill(Model model, User user, @RequestParam("goodsId") long goodsId) {
         // 首先判断用户是否登录
@@ -40,8 +48,8 @@ public class SeckillController {
 
         // 判断库存是否足够
         GoodsVO goodsVO = goodsService.queryGoodsVOById(goodsId);
-        int goodsStock = goodsVO.getGoodsStock();
-        if (goodsStock <= 0) {
+        int stockCount = goodsVO.getStockCount();
+        if (stockCount <= 0) {
             model.addAttribute("msg", Constant.SECKILL_OVER);
             return "seckillFail";
         }
