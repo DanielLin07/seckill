@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.daniel.seckill.dao.UserDAO;
 import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.JedisAdapter;
+import com.daniel.seckill.redis.UserKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,6 @@ public class UserService {
         if (StringUtils.isBlank(token)) {
             return null;
         }
-        return JSON.toJavaObject(JSON.parseObject(jedisAdapter.get("user:token:" + token)), User.class);
+        return JSON.toJavaObject(JSON.parseObject(jedisAdapter.get(UserKey.getByToken + token)), User.class);
     }
 }

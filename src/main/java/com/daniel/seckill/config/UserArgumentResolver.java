@@ -1,6 +1,7 @@
 package com.daniel.seckill.config;
 
 import com.daniel.seckill.model.User;
+import com.daniel.seckill.redis.UserKey;
 import com.daniel.seckill.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,14 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        String token = getCookieValue(request, "token");
-        return StringUtils.isNotBlank(token) ? userService.queryByToken(token) : null;
+
+        String paramToken = request.getParameter("token");
+        String cookieToken = getCookieValue(request, "token");
+        if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
+            return null;
+        }
+        String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
+        return userService.queryByToken(token);
     }
 
     private String getCookieValue(HttpServletRequest request, String cookieKey) {

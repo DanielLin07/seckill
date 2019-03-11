@@ -6,6 +6,7 @@ import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.JedisAdapter;
+import com.daniel.seckill.redis.UserKey;
 import com.daniel.seckill.service.UserService;
 import com.daniel.seckill.util.SecurityUtil;
 import com.daniel.seckill.vo.LoginVO;
@@ -87,9 +88,10 @@ public class LoginController {
      * @param user     User对象
      */
     private void addCookie(HttpServletResponse response, String token, User user) {
-        jedisAdapter.set("user:token:" + token, JSON.toJSONString(user));
+        jedisAdapter.setex(UserKey.getByToken.getPrefix() + ":" + token,
+                JSON.toJSONString(user), UserKey.getByToken.expireSeconds());
         Cookie cookie = new Cookie("token", token);
-        cookie.setMaxAge(3600 * 24);
+        cookie.setMaxAge(UserKey.getByToken.expireSeconds());
         cookie.setPath("/");
         response.addCookie(cookie);
     }

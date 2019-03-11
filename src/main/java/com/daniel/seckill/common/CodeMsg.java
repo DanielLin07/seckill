@@ -37,4 +37,12 @@ public enum CodeMsg {
         this.code = code;
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "CodeMsg{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
 }

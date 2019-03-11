@@ -1,14 +1,24 @@
 package com.daniel.seckill.controller;
 
 import com.daniel.seckill.model.User;
+import com.daniel.seckill.redis.GoodsKey;
+import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.service.GoodsService;
 import com.daniel.seckill.vo.GoodsVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.context.IWebContext;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -23,6 +33,10 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private JedisAdapter jedisAdapter;
+    @Autowired
+    private ThymeleafViewResolver thymeleafViewResolver;
 
     /**
      * 商品列表页
@@ -31,13 +45,30 @@ public class GoodsController {
      * @param user  用户信息
      * @return 跳转至商品列表页
      */
-    @RequestMapping("toList")
-    public String toList(Model model, User user) {
+    @RequestMapping(value = "toList", produces = "text/html")
+    @ResponseBody
+    public String toList(HttpServletRequest request, HttpServletResponse response, Model model, User user) {
         model.addAttribute("user", user);
-        // 查询商品列表页
+
+        // 首先去Redis中查页面缓存，如果存在缓存，则直接返回
+        String html = jedisAdapter.get(GoodsKey.getGoodsList.getPrefix());
+        if (StringUtils.isNotEmpty(html)) {
+            return html;
+        }
+
+        // 如果不存在缓存，则查询商品列表页并进行手动渲染
         List<GoodsVO> goodsVOList = goodsService.queryListGoodsVO();
         model.addAttribute("goodsVOList", goodsVOList);
-        return "goodsList";
+        IWebContext context = new WebContext(request, response,
+                request.getServletContext(), request.getLocale(), model.asMap());
+        // 执行手动渲染
+        html = thymeleafViewResolver.getTemplateEngine().process("goodsList", context);
+        // 将页面缓存到Redis当中
+        if (StringUtils.isNotEmpty(html)) {
+            jedisAdapter.setex(GoodsKey.getGoodsList.getPrefix(), html,
+                    GoodsKey.getGoodsList.expireSeconds());
+        }
+        return html;
     }
 
     /**
@@ -48,9 +79,17 @@ public class GoodsController {
      * @param goodsId 商品Id
      * @return 跳转至商品细节页
      */
-    @RequestMapping("toDetail/{goodsId}")
-    public String toDetail(Model model, User user, @PathVariable("goodsId") long goodsId) {
+    @RequestMapping(value = "toDetail/{goodsId}", produces = "text/html")
+    @ResponseBody
+    public String toDetail(HttpServletRequest request, HttpServletResponse response,
+                           Model model, User user, @PathVariable("goodsId") long goodsId) {
         model.addAttribute("user", user);
+
+        // 首先去Redis中查页面缓存，如果存在缓存，则直接返回
+        String html = jedisAdapter.get(GoodsKey.getGoodsDetail.getPrefix() + ":" + goodsId);
+        if (StringUtils.isNotEmpty(html)) {
+            return html;
+        }
 
         // 根据商品Id查询商品详情
         GoodsVO goodsVO = goodsService.queryGoodsVOById(goodsId);
@@ -63,7 +102,6 @@ public class GoodsController {
         // 记录秒杀状态以及倒计时
         long seckillStatus = 0;
         long remainSeconds = 0;
-
         // 秒杀还未开始，处于倒计时状态
         if (currentTime < startTime) {
             remainSeconds = (startTime - currentTime) / 1000;
@@ -75,9 +113,18 @@ public class GoodsController {
         } else {
             seckillStatus = 1;
         }
-
         model.addAttribute("seckillStatus", seckillStatus);
         model.addAttribute("remainSeconds", remainSeconds);
-        return "goodsDetail";
+
+        IWebContext context = new WebContext(request, response,
+                request.getServletContext(), request.getLocale(), model.asMap());
+        // 执行手动渲染
+        html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail", context);
+        // 将页面缓存到Redis当中
+        if (StringUtils.isNotEmpty(html)) {
+            jedisAdapter.setex(GoodsKey.getGoodsDetail.getPrefix() + ":" + goodsId, html,
+                    GoodsKey.getGoodsDetail.expireSeconds());
+        }
+        return html;
     }
 }
