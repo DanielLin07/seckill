@@ -1,5 +1,6 @@
 package com.daniel.seckill.controller;
 
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.redis.JedisAdapter;
@@ -28,10 +29,10 @@ public class SampleController {
     public Result testSet() {
         try {
             jedisAdapter.set("books1", "python1");
-            return ResultBuilder.buildSuccessResult();
+            return ResultBuilder.buildResult(CodeMsg.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.buildFailResult();
+            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
         }
     }
 
@@ -41,10 +42,10 @@ public class SampleController {
         try {
             String data = jedisAdapter.get("books1");
             System.out.println("data:" + data);
-            return ResultBuilder.buildFullSuccessResult(data);
+            return ResultBuilder.buildResult(CodeMsg.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.buildFailResult();
+            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
         }
     }
 }

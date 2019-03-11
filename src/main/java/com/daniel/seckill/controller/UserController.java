@@ -1,5 +1,6 @@
 package com.daniel.seckill.controller;
 
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.service.UserService;
@@ -30,7 +31,7 @@ public class UserController {
     @RequestMapping("/info")
     @ResponseBody
     public Result toLogin(LoginVO loginVO) {
-        return ResultBuilder.buildFullSuccessResult(loginVO);
+        return ResultBuilder.buildResult(CodeMsg.SUCCESS, loginVO);
     }
 
 }

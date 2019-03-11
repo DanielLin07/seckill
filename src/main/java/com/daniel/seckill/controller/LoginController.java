@@ -2,6 +2,7 @@ package com.daniel.seckill.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.model.User;
@@ -10,6 +11,7 @@ import com.daniel.seckill.redis.UserKey;
 import com.daniel.seckill.service.UserService;
 import com.daniel.seckill.util.SecurityUtil;
 import com.daniel.seckill.vo.LoginVO;
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,26 +60,26 @@ public class LoginController {
     @ResponseBody
     public Result doLogin(HttpServletResponse response, LoginVO loginVO) {
         if (loginVO == null) {
-            return ResultBuilder.buildFailResult("用户信息不能为空！");
+            return ResultBuilder.buildResult(CodeMsg.USERNAME_EMPTY);
         }
 
         // 根据用户名查询出的User，如果为null，则该用户不存在
         User confirmUser = userService.queryByUsername(loginVO.getUsername());
         if (confirmUser == null) {
-            return ResultBuilder.buildFailResult("用户名不存在！");
+            return ResultBuilder.buildResult(CodeMsg.USERNAME_NOT_EXIST);
         }
 
         // 判断加密后的密码与数据库中存放的密码是否一致
         if (!SecurityUtil.encryptPassword(loginVO.getPassword(), loginVO.getUsername(), confirmUser.getSalt())
                 .equals(confirmUser.getPassword())) {
-            return ResultBuilder.buildFailResult("用户名与密码不匹配！");
+            return ResultBuilder.buildResult(CodeMsg.PASSWORD_ERROR);
         }
 
         String token = SecurityUtil.randomUUID();
         JSONObject data = new JSONObject();
         data.put("token", token);
         addCookie(response, token, confirmUser);
-        return ResultBuilder.buildFullSuccessResult("登录成功！", data);
+        return ResultBuilder.buildResult(CodeMsg.SUCCESS, data);
     }
 
     /**

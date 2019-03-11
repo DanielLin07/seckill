@@ -1,6 +1,6 @@
 package com.daniel.seckill.controller;
 
-import com.daniel.seckill.common.Constant;
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.model.OrderInfo;
 import com.daniel.seckill.model.SeckillOrderInfo;
 import com.daniel.seckill.model.User;
@@ -50,14 +50,14 @@ public class SeckillController {
         GoodsVO goodsVO = goodsService.queryGoodsVOById(goodsId);
         int stockCount = goodsVO.getStockCount();
         if (stockCount <= 0) {
-            model.addAttribute("msg", Constant.SECKILL_OVER);
+            model.addAttribute("msg", CodeMsg.SECKILL_OVER.msg);
             return "seckillFail";
         }
 
         // 判断用户是否重复秒杀
         SeckillOrderInfo seckillOrderInfo = orderService.querySeckillOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (seckillOrderInfo != null) {
-            model.addAttribute("msg", Constant.SECKILL_REPEAT);
+            model.addAttribute("msg", CodeMsg.SECKILL_REPEAT.msg);
             return "seckillFail";
         }
 

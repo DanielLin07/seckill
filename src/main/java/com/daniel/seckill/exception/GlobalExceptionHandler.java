@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import org.springframework.validation.BindException;
@@ -29,15 +30,15 @@ public class GlobalExceptionHandler {
 
         if (e instanceof GlobalException) {
             GlobalException exception = (GlobalException) e;
-            return ResultBuilder.buildFailResult(exception.getCodeMsg().toString());
+            return ResultBuilder.buildResult(exception.getCodeMsg());
         } else if (e instanceof BindException) {
             BindException ex = (BindException) e;
             List<ObjectError> errors = ex.getAllErrors();
             ObjectError error = errors.get(0);
             String msg = error.getDefaultMessage();
-            return ResultBuilder.buildFailResult();
+            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR.code, msg);
         } else {
-            return ResultBuilder.buildFailResult();
+            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
         }
     }
 }
