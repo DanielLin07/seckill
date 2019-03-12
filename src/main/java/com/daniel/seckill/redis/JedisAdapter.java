@@ -3,6 +3,7 @@ package com.daniel.seckill.redis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
@@ -16,7 +17,7 @@ import java.util.*;
  * @author DanielLin07
  * @date 2018/11/13 22:00
  */
-@Service
+@Repository
 public class JedisAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(JedisAdapter.class);

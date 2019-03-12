@@ -4,10 +4,10 @@ import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.GoodsKey;
 import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.service.GoodsService;
+import com.daniel.seckill.service.RedisService;
 import com.daniel.seckill.vo.GoodsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +34,7 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
     @Autowired
-    private JedisAdapter jedisAdapter;
+    private RedisService redisService;
     @Autowired
     private ThymeleafViewResolver thymeleafViewResolver;
 
@@ -51,7 +51,7 @@ public class GoodsController {
         model.addAttribute("user", user);
 
         // 首先去Redis中查页面缓存，如果存在缓存，则直接返回
-        String html = jedisAdapter.get(GoodsKey.getGoodsList.getPrefix());
+        String html = redisService.get(GoodsKey.getGoodsList.getPrefix());
         if (StringUtils.isNotEmpty(html)) {
             return html;
         }
@@ -65,8 +65,7 @@ public class GoodsController {
         html = thymeleafViewResolver.getTemplateEngine().process("goodsList", context);
         // 将页面缓存到Redis当中
         if (StringUtils.isNotEmpty(html)) {
-            jedisAdapter.setex(GoodsKey.getGoodsList.getPrefix(), html,
-                    GoodsKey.getGoodsList.expireSeconds());
+            redisService.setex(GoodsKey.getGoodsList, html);
         }
         return html;
     }
@@ -86,7 +85,7 @@ public class GoodsController {
         model.addAttribute("user", user);
 
         // 首先去Redis中查页面缓存，如果存在缓存，则直接返回
-        String html = jedisAdapter.get(GoodsKey.getGoodsDetail.getPrefix() + ":" + goodsId);
+        String html = redisService.get(GoodsKey.getGoodsDetail, goodsId);
         if (StringUtils.isNotEmpty(html)) {
             return html;
         }
@@ -122,8 +121,7 @@ public class GoodsController {
         html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail", context);
         // 将页面缓存到Redis当中
         if (StringUtils.isNotEmpty(html)) {
-            jedisAdapter.setex(GoodsKey.getGoodsDetail.getPrefix() + ":" + goodsId, html,
-                    GoodsKey.getGoodsDetail.expireSeconds());
+            redisService.setex(GoodsKey.getGoodsDetail, goodsId, html);
         }
         return html;
     }

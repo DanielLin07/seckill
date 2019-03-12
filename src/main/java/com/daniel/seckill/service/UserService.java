@@ -3,14 +3,10 @@ package com.daniel.seckill.service;
 import com.alibaba.fastjson.JSON;
 import com.daniel.seckill.dao.UserDAO;
 import com.daniel.seckill.model.User;
-import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.redis.UserKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户相关的Service
@@ -24,7 +20,7 @@ public class UserService {
     @Autowired
     private UserDAO userDAO;
     @Autowired
-    private JedisAdapter jedisAdapter;
+    private RedisService redisService;
 
     /**
      * 根据用户Id获取对应用户
@@ -33,7 +29,18 @@ public class UserService {
      * @return 成功则返回对应用户
      */
     public User queryById(int id) {
-        return userDAO.queryById(id);
+        // 先从缓存中取用户数据
+        User user = redisService.get(UserKey.getById, id, User.class);
+        if (user != null) {
+            return user;
+        }
+
+        // 缓存中取不到则从数据库中取，并存到缓存当中
+        user = userDAO.queryById(id);
+        if (user != null) {
+            redisService.set(UserKey.getById, id, JSON.toJSONString(user));
+        }
+        return user;
     }
 
     /**
@@ -59,6 +66,6 @@ public class UserService {
         if (StringUtils.isBlank(token)) {
             return null;
         }
-        return JSON.toJavaObject(JSON.parseObject(jedisAdapter.get(UserKey.getByToken + token)), User.class);
+        return redisService.get(UserKey.getByToken, token, User.class);
     }
 }
