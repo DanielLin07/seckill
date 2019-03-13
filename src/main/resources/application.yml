@@ -2,23 +2,24 @@ spring:
   # Datasource配置
   datasource:
     url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username:
+    username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-    maxActive: 2
-    filters: stat
-    initialSize: 1
-    maxWait: 60000
-    minIdle: 1
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: select 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxOpenPreparedStatements: 20
+
+    # Druid连接池配置
+    druid:
+      max-active: 1000
+      filters: stat
+      initial-size: 100
+      max-wait: 60000
+      min-idle: 500
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
 
   # Thymeleaf配置
   thymeleaf:
@@ -27,15 +28,15 @@ spring:
   # Redis配置
   redis:
     database: 0
-    host:
-    port:
+    host: 127.0.0.1
+    port: 6379
     password:
-    timeout: 5000
+    timeout: 100000
     jedis:
       pool:
-        max-active: 1000
-        max-wait: -1
-        max-idle: 8
+        max-total: 1000
+        max-wait: 500
+        max-idle: 500
         min-idle: 0
 
 # MyBatis配置

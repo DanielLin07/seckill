@@ -22,12 +22,8 @@ public class JedisAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(JedisAdapter.class);
 
-    private JedisPool jedisPool;
-
     @Autowired
-    public JedisAdapter(JedisPool jedisPool) {
-        this.jedisPool = jedisPool;
-    }
+    private JedisPool jedisPool;
 
     /**
      * 通过key获取储存在redis中的value

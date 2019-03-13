@@ -42,6 +42,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     private int timeout;
 
     /**
+     * 最多连接数
+     */
+    @Value("${spring.redis.jedis.pool.max-total}")
+    private int maxTotal;
+
+    /**
      * 最大连接数
      */
     @Value("${spring.redis.jedis.pool.max-idle}")
@@ -67,6 +73,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public JedisPool redisPoolFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMinIdle(minIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);

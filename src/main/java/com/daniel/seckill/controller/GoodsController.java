@@ -51,7 +51,7 @@ public class GoodsController {
         model.addAttribute("user", user);
 
         // 首先去Redis中查页面缓存，如果存在缓存，则直接返回
-        String html = redisService.get(GoodsKey.getGoodsList.getPrefix());
+        String html = redisService.get(GoodsKey.getGoodsList);
         if (StringUtils.isNotEmpty(html)) {
             return html;
         }
@@ -68,6 +68,20 @@ public class GoodsController {
             redisService.setex(GoodsKey.getGoodsList, html);
         }
         return html;
+    }
+
+    /**
+     * 比较QPS用
+     */
+    @RequestMapping(value = "toList2", produces = "text/html")
+    public String toList2(Model model, User user) {
+        model.addAttribute("user", user);
+
+        // 如果不存在缓存，则查询商品列表页并进行手动渲染
+        List<GoodsVO> goodsVOList = goodsService.queryListGoodsVO();
+        model.addAttribute("goodsVOList", goodsVOList);
+
+        return "goodsList";
     }
 
     /**

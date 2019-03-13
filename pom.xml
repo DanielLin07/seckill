@@ -79,7 +79,7 @@
         <!--数据库：Druid连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.10</version>
         </dependency>
         <!--数据库：MySQL连接工具-->

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Redis服务封装
+ * Redis业务封装
  *
  * @author DanielLin07
  * @date 2019/3/11 16:59
@@ -22,6 +22,10 @@ public class RedisService {
 
     public boolean set(String key, String value) {
         return jedisAdapter.set(key, value);
+    }
+
+    public boolean set(BasePrefix prefix, String value) {
+        return jedisAdapter.set(prefix.getPrefix(), value);
     }
 
     public boolean set(BasePrefix prefix, Object keyName, String value) {
@@ -43,6 +47,10 @@ public class RedisService {
 
     public String get(String key) {
         return jedisAdapter.get(key);
+    }
+
+    public String get(BasePrefix prefix) {
+        return jedisAdapter.get(prefix.getPrefix());
     }
 
     public String get(BasePrefix prefix, Object keyName) {

@@ -6,13 +6,11 @@ import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.common.Result;
 import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.model.User;
-import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.redis.UserKey;
 import com.daniel.seckill.service.RedisService;
 import com.daniel.seckill.service.UserService;
 import com.daniel.seckill.util.SecurityUtil;
 import com.daniel.seckill.vo.LoginVO;
-import com.sun.org.apache.bcel.internal.classfile.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +34,6 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private JedisAdapter jedisAdapter;
     @Autowired
     private RedisService redisService;
     @Autowired
