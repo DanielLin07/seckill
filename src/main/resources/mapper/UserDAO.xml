@@ -26,4 +26,15 @@
         VALUES (#{username},#{password},#{salt},#{headUrl},#{registerDate},#{lastLoginDate},#{loginCount})
     </insert>
 
+    <!-- 更新用户 -->
+    <update id="update" parameterType="User" >
+        UPDATE user where id=#{id}
+        <set>
+            <if test="username != null and username.length()>0">username = #{username},</if>
+            <if test="password != null and password.length()>0">password = #{password},</if>
+            <if test="salt != null and salt.length()>0">salt = #{salt},</if>
+            <if test="headUrl != null and headUrl.length()>0">head_url = #{headUrl},</if>
+        </set>
+    </update>
+
 </mapper>

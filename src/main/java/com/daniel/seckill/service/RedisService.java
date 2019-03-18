@@ -66,4 +66,12 @@ public class RedisService {
                 jedisAdapter.get(prefix.getPrefix() + SPLIT + keyName)), clazz);
     }
 
+    public void delete(String key) {
+        jedisAdapter.del(key);
+    }
+
+    public void delete(BasePrefix prefix, Object keyName) {
+        jedisAdapter.del(prefix.getPrefix() + SPLIT + keyName);
+    }
+
 }

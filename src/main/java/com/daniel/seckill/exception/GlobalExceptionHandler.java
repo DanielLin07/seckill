@@ -30,15 +30,15 @@ public class GlobalExceptionHandler {
 
         if (e instanceof GlobalException) {
             GlobalException exception = (GlobalException) e;
-            return ResultBuilder.buildResult(exception.getCodeMsg());
+            return ResultBuilder.build(exception.getCodeMsg());
         } else if (e instanceof BindException) {
             BindException ex = (BindException) e;
             List<ObjectError> errors = ex.getAllErrors();
             ObjectError error = errors.get(0);
             String msg = error.getDefaultMessage();
-            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR.code, msg);
+            return ResultBuilder.build(CodeMsg.SERVER_ERROR.code, msg);
         } else {
-            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
+            return ResultBuilder.build(CodeMsg.SERVER_ERROR);
         }
     }
 }

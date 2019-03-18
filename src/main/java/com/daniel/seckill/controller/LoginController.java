@@ -59,26 +59,26 @@ public class LoginController {
     @ResponseBody
     public Result doLogin(HttpServletResponse response, LoginVO loginVO) {
         if (loginVO == null) {
-            return ResultBuilder.buildResult(CodeMsg.USERNAME_EMPTY);
+            return ResultBuilder.build(CodeMsg.USERNAME_EMPTY);
         }
 
         // 根据用户名查询出的User，如果为null，则该用户不存在
         User confirmUser = userService.queryByUsername(loginVO.getUsername());
         if (confirmUser == null) {
-            return ResultBuilder.buildResult(CodeMsg.USERNAME_NOT_EXIST);
+            return ResultBuilder.build(CodeMsg.USERNAME_NOT_EXIST);
         }
 
         // 判断加密后的密码与数据库中存放的密码是否一致
         if (!SecurityUtil.encryptPassword(loginVO.getPassword(), loginVO.getUsername(), confirmUser.getSalt())
                 .equals(confirmUser.getPassword())) {
-            return ResultBuilder.buildResult(CodeMsg.PASSWORD_ERROR);
+            return ResultBuilder.build(CodeMsg.PASSWORD_ERROR);
         }
 
         String token = SecurityUtil.randomUUID();
         JSONObject data = new JSONObject();
         data.put("token", token);
         addCookie(response, token, confirmUser);
-        return ResultBuilder.buildResult(CodeMsg.SUCCESS, data);
+        return ResultBuilder.build(CodeMsg.SUCCESS, data);
     }
 
     /**

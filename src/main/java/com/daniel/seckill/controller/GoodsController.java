@@ -1,15 +1,20 @@
 package com.daniel.seckill.controller;
 
+import com.daniel.seckill.common.CodeMsg;
+import com.daniel.seckill.common.Result;
+import com.daniel.seckill.common.ResultBuilder;
 import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.GoodsKey;
 import com.daniel.seckill.redis.JedisAdapter;
 import com.daniel.seckill.service.GoodsService;
 import com.daniel.seckill.service.RedisService;
+import com.daniel.seckill.vo.GoodsDetailVO;
 import com.daniel.seckill.vo.GoodsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -85,7 +90,7 @@ public class GoodsController {
     }
 
     /**
-     * 商品细节页
+     * 商品细节页，Thymeleaf渲染
      *
      * @param model   model
      * @param user    用户信息
@@ -138,5 +143,48 @@ public class GoodsController {
             redisService.setex(GoodsKey.getGoodsDetail, goodsId, html);
         }
         return html;
+    }
+
+    /**
+     * 商品细节页
+     *
+     * @param user    用户信息
+     * @param goodsId 商品Id
+     * @return 跳转至商品细节页
+     */
+    @GetMapping(value = "detail/{goodsId}")
+    @ResponseBody
+    public Result detail(HttpServletRequest request, HttpServletResponse response,
+                         User user, @PathVariable("goodsId") long goodsId) {
+
+        // 根据商品Id查询商品详情
+        GoodsVO goodsVO = goodsService.queryGoodsVOById(goodsId);
+
+        long startTime = goodsVO.getStartDate().getTime();
+        long endTime = goodsVO.getEndDate().getTime();
+        long currentTime = System.currentTimeMillis();
+
+        // 记录秒杀状态以及倒计时
+        int seckillStatus = 0;
+        int remainSeconds = 0;
+        // 秒杀还未开始，处于倒计时状态
+        if (currentTime < startTime) {
+            remainSeconds = (int) ((startTime - currentTime) / 1000);
+            // 秒杀已经结束
+        } else if (currentTime > endTime) {
+            seckillStatus = 2;
+            remainSeconds = -1;
+            // 秒杀正在进行中
+        } else {
+            seckillStatus = 1;
+        }
+
+        GoodsDetailVO goodsDetailVO = new GoodsDetailVO();
+        goodsDetailVO.setGoodsVO(goodsVO);
+        goodsDetailVO.setUser(user);
+        goodsDetailVO.setRemainSeconds(remainSeconds);
+        goodsDetailVO.setSeckillStatus(seckillStatus);
+
+        return ResultBuilder.build(CodeMsg.SUCCESS, goodsDetailVO);
     }
 }

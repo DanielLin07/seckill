@@ -31,7 +31,11 @@ public class SeckillService {
     @Transactional(rollbackFor = Exception.class)
     public OrderInfo doSeckill(User user, GoodsVO goodsVO) {
         // 减少商品的库存
-        goodsService.updateSeckillGoodsStock(goodsVO, -1);
+        int affectedRows = goodsService.updateSeckillGoodsStock(goodsVO, -1);
+        if (affectedRows == 0) {
+            return null;
+        }
+
         // 下订单，写入秒杀订单
         return orderService.createOrder(user, goodsVO);
     }

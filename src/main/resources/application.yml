@@ -1,7 +1,7 @@
 spring:
   # Datasource配置
   datasource:
-    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&useSSL=false&useAffectedRows=true&characterEncoding=utf8
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
@@ -21,9 +21,24 @@ spring:
       pool-prepared-statements: true
       max-open-prepared-statements: 20
 
+  # Static配置
+  resources:
+    add-mappings: true
+    chain:
+      cache: true
+      enabled: true
+      gzipped: true
+      html-application-cache: true
+    static-locations: classpath:/static/
+
   # Thymeleaf配置
   thymeleaf:
     encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    enabled: true
+    mode: HTML5
 
   # Redis配置
   redis:

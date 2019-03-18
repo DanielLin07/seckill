@@ -17,7 +17,15 @@ import org.springframework.stereotype.Repository;
 public interface OrderDAO {
 
     /**
-     * 根据用户Id以及商品Id获取订单Id
+     * 根据订单Id获取订单
+     *
+     * @param orderId 订单Id
+     * @return 成功则返回对应订单
+     */
+    OrderInfo queryById(long orderId);
+
+    /**
+     * 根据用户Id以及商品Id获取订单
      *
      * @param userId  用户Id
      * @param goodsId 商品Id
@@ -26,13 +34,13 @@ public interface OrderDAO {
     OrderInfo queryByUserIdAndGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
 
     /**
-     * 根据用户Id以及商品Id获取秒杀订单Id
+     * 根据用户Id以及商品Id获取秒杀订单
      *
      * @param userId  用户Id
      * @param goodsId 商品Id
      * @return 成功则返回对应秒杀订单
      */
-    SeckillOrderInfo querySeckillOrderInfoByUserIdAndGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
+    SeckillOrderInfo querySeckillOrderInfoByUserIdGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
 
     /**
      * 插入新订单

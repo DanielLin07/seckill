@@ -24,6 +24,16 @@ public class OrderService {
     private OrderDAO orderDAO;
 
     /**
+     * 根据订单Id获取订单
+     *
+     * @param orderId 订单Id
+     * @return 成功则返回对应订单
+     */
+    public OrderInfo queryById(long orderId) {
+        return orderDAO.queryById(orderId);
+    }
+
+    /**
      * 根据用户Id以及商品Id获取订单Id
      *
      * @param userId  用户Id
@@ -41,8 +51,8 @@ public class OrderService {
      * @param goodsId 商品Id
      * @return 成功则返回对应秒杀订单
      */
-    public SeckillOrderInfo querySeckillOrderByUserIdAndGoodsId(long userId, long goodsId) {
-        return orderDAO.querySeckillOrderInfoByUserIdAndGoodsId(userId, goodsId);
+    public SeckillOrderInfo querySeckillOrderByUserIdGoodsId(long userId, long goodsId) {
+        return orderDAO.querySeckillOrderInfoByUserIdGoodsId(userId, goodsId);
     }
 
     /**

@@ -36,9 +36,10 @@ public interface GoodsDAO {
     /**
      * 更新秒杀商品的库存
      *
-     * @param seckillGoods 秒杀商品
-     * @param num          库存改变量
+     * @param goodsId 秒杀商品Id
+     * @param num     库存改变量
+     * @return 被修改的行数
      */
-    void updateSeckillGoodsStock(@Param("seckillGoods") SeckillGoods seckillGoods, @Param("num") int num);
+    Integer updateSeckillGoodsStock(@Param("goodsId") long goodsId, @Param("num") int num);
 
 }

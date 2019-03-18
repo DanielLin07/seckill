@@ -16,9 +16,9 @@ import java.util.List;
  */
 @Service
 public class GoodsService {
-	
-	@Autowired
-	private GoodsDAO goodsDAO;
+
+    @Autowired
+    private GoodsDAO goodsDAO;
 
     /**
      * 根据商品Id获取对应商品
@@ -35,19 +35,19 @@ public class GoodsService {
      *
      * @return 所有商品
      */
-	public List<GoodsVO> queryListGoodsVO(){
-		return goodsDAO.queryListGoodsVO();
-	}
+    public List<GoodsVO> queryListGoodsVO() {
+        return goodsDAO.queryListGoodsVO();
+    }
 
     /**
      * 更新秒杀商品的库存
      *
-     * @param goodsVO 商品
+     * @param goodsVO 秒杀商品
+     * @param num     库存改变量
+     * @return 被修改的行数
      */
-	public void updateSeckillGoodsStock(GoodsVO goodsVO, int num) {
-	    SeckillGoods seckillGoods = new SeckillGoods();
-	    seckillGoods.setGoodsId(goodsVO.getId());
-	    goodsDAO.updateSeckillGoodsStock(seckillGoods, num);
+    public Integer updateSeckillGoodsStock(GoodsVO goodsVO, int num) {
+        return goodsDAO.updateSeckillGoodsStock(goodsVO.getId(), num);
     }
 
 }

@@ -29,10 +29,10 @@ public class SampleController {
     public Result testSet() {
         try {
             jedisAdapter.set("books1", "python1");
-            return ResultBuilder.buildResult(CodeMsg.SUCCESS);
+            return ResultBuilder.build(CodeMsg.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
+            return ResultBuilder.build(CodeMsg.SERVER_ERROR);
         }
     }
 
@@ -42,10 +42,10 @@ public class SampleController {
         try {
             String data = jedisAdapter.get("books1");
             System.out.println("data:" + data);
-            return ResultBuilder.buildResult(CodeMsg.SUCCESS);
+            return ResultBuilder.build(CodeMsg.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.buildResult(CodeMsg.SERVER_ERROR);
+            return ResultBuilder.build(CodeMsg.SERVER_ERROR);
         }
     }
 }

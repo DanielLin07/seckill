@@ -18,8 +18,8 @@ public class ResultBuilder {
      * @param data 响应数据
      * @return 带有data数据的响应Result
      */
-    public static <T> Result<T> buildResult(int code, String msg, T data) {
-        Result<T> result = buildResult(code, msg);
+    public static <T> Result<T> build(int code, String msg, T data) {
+        Result<T> result = build(code, msg);
         result.setData(data);
         return result;
     }
@@ -31,7 +31,7 @@ public class ResultBuilder {
      * @param msg  响应信息
      * @return 响应Result
      */
-    public static <T> Result<T> buildResult(int code, String msg) {
+    public static <T> Result<T> build(int code, String msg) {
         Result<T> result = new Result<>();
         result.setCode(code);
         if (StringUtils.isEmpty(msg)) {
@@ -47,8 +47,8 @@ public class ResultBuilder {
      * @param codeMsg 请求结果枚举类
      * @return 响应Result
      */
-    public static <T> Result<T> buildResult(CodeMsg codeMsg) {
-        return buildResult(codeMsg.code, codeMsg.msg);
+    public static <T> Result<T> build(CodeMsg codeMsg) {
+        return build(codeMsg.code, codeMsg.msg);
     }
 
     /**
@@ -58,8 +58,18 @@ public class ResultBuilder {
      * @param data    响应数据
      * @return 响应Result
      */
-    public static <T> Result<T> buildResult(CodeMsg codeMsg, T data) {
-        return buildResult(codeMsg.code, codeMsg.msg, data);
+    public static <T> Result<T> build(CodeMsg codeMsg, T data) {
+        return build(codeMsg.code, codeMsg.msg, data);
+    }
+
+    /**
+     * 生成带有数据的响应成功Result
+     *
+     * @param data 响应数据
+     * @return 响应Result
+     */
+    public static <T> Result<T> build(T data) {
+        return build(CodeMsg.SUCCESS, data);
     }
 
 }

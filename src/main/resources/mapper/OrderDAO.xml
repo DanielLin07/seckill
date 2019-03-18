@@ -28,7 +28,14 @@
         <result column="goods_id" property="goodsId" javaType="long"/>
     </resultMap>
 
-    <!-- 根据用户Id以及商品Id获取订单Id -->
+    <!-- 根据订单Id获取订单 -->
+    <select id="queryById" resultMap="OrderInfoMapping">
+        SELECT *
+        FROM order_info
+        WHERE id = #{orderId}
+    </select>
+
+    <!-- 根据用户Id以及商品Id获取订单 -->
     <select id="queryByUserIdAndGoodsId" resultMap="OrderInfoMapping">
         SELECT *
         FROM order_info
@@ -36,14 +43,14 @@
     </select>
 
     <!-- 根据用户Id以及商品Id获取秒杀订单Id -->
-    <select id="querySeckillOrderInfoByUserIdAndGoodsId" resultMap="SeckillOrderInfoMapping">
+    <select id="querySeckillOrderInfoByUserIdGoodsId" resultMap="SeckillOrderInfoMapping">
         SELECT *
         FROM seckill_order_info
         WHERE user_id = #{userId} AND goods_id = #{goodsId}
     </select>
 
     <!-- 插入新订单 -->
-    <insert id="add" keyProperty="id" parameterType="OrderInfo" >
+    <insert id="add" keyProperty="id" useGeneratedKeys="true" parameterType="OrderInfo" >
         INSERT INTO
         order_info(user_id, goods_id, delivery_address_id, goods_name, goods_count,
               goods_price, order_channel, status, create_date, pay_date)

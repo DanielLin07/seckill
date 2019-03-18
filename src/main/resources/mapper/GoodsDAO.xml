@@ -41,7 +41,7 @@
     <update id="updateSeckillGoodsStock">
         UPDATE seckill_goods
         SET stock_count = stock_count + #{num}
-        WHERE goods_id = #{seckillGoods.goodsId}
+        WHERE goods_id = #{goodsId} AND stock_count > 0
     </update>
 
 </mapper>

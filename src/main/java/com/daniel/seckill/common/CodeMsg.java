@@ -25,6 +25,11 @@ public enum CodeMsg {
     SECKILL_REPEAT(500501, "不能重复秒杀"),
 
     /**
+     * 订单模块 5004XX
+     */
+    ORDER_NOT_EXIST(500400, "订单不存在"),
+
+    /**
      * 成功处理请求
      */
     SUCCESS(200, "SUCCESS"),

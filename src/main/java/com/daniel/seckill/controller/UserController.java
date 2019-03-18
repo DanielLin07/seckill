@@ -31,7 +31,7 @@ public class UserController {
     @RequestMapping("/info")
     @ResponseBody
     public Result toLogin(LoginVO loginVO) {
-        return ResultBuilder.buildResult(CodeMsg.SUCCESS, loginVO);
+        return ResultBuilder.build(CodeMsg.SUCCESS, loginVO);
     }
 
 }

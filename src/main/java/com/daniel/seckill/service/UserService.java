@@ -1,9 +1,12 @@
 package com.daniel.seckill.service;
 
 import com.alibaba.fastjson.JSON;
+import com.daniel.seckill.common.CodeMsg;
 import com.daniel.seckill.dao.UserDAO;
+import com.daniel.seckill.exception.GlobalException;
 import com.daniel.seckill.model.User;
 import com.daniel.seckill.redis.UserKey;
+import com.daniel.seckill.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,7 @@ public class UserService {
      * @param id 用户Id
      * @return 成功则返回对应用户
      */
-    public User queryById(int id) {
+    public User queryById(long id) {
         // 先从缓存中取用户数据
         User user = redisService.get(UserKey.getById, id, User.class);
         if (user != null) {
@@ -67,5 +70,33 @@ public class UserService {
             return null;
         }
         return redisService.get(UserKey.getByToken, token, User.class);
+    }
+
+    /**
+     * 更新用户密码
+     *
+     * @param token       用户token，用于更新缓存
+     * @param id          用户Id
+     * @param newPassword 新密码
+     * @return 更新结果，更新成功返回true
+     */
+    public boolean updatePassword(String token, long id, String newPassword) {
+        // 根据Id从数据库中获取User信息
+        User user = queryById(id);
+        if (user == null) {
+            throw new GlobalException(CodeMsg.USERNAME_NOT_EXIST);
+        }
+
+        // 更新数据库的信息
+        User toBeUpdate = new User();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(SecurityUtil.encryptPassword(newPassword, user.getUsername(), user.getSalt()));
+        userDAO.update(toBeUpdate);
+
+        // 最后处理缓存
+        redisService.delete(UserKey.getById, id);
+        user.setPassword(toBeUpdate.getPassword());
+        redisService.set(UserKey.getByToken, token, JSON.toJSONString(user));
+        return true;
     }
 }

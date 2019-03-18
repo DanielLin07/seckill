@@ -22,7 +22,7 @@ public interface UserDAO {
      * @param id 用户Id
      * @return 成功则返回对应用户
      */
-    User queryById(int id);
+    User queryById(long id);
 
     /**
      * 根据用户名获取对应用户
@@ -45,5 +45,12 @@ public interface UserDAO {
      * @param user 新用户
      */
     void add(User user);
+
+    /**
+     * 更新用户
+     *
+     * @param user 待更新的用户
+     */
+    void update(User user);
 
 }
