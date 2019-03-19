@@ -1,9 +1,11 @@
 package com.daniel.seckill.service;
 
+import com.alibaba.fastjson.JSON;
 import com.daniel.seckill.dao.OrderDAO;
 import com.daniel.seckill.model.OrderInfo;
 import com.daniel.seckill.model.SeckillOrderInfo;
 import com.daniel.seckill.model.User;
+import com.daniel.seckill.redis.OrderKey;
 import com.daniel.seckill.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class OrderService {
 
     @Autowired
     private OrderDAO orderDAO;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 根据订单Id获取订单
@@ -52,7 +56,8 @@ public class OrderService {
      * @return 成功则返回对应秒杀订单
      */
     public SeckillOrderInfo querySeckillOrderByUserIdGoodsId(long userId, long goodsId) {
-        return orderDAO.querySeckillOrderInfoByUserIdGoodsId(userId, goodsId);
+        return redisService.get(OrderKey.getSeckillOrderByUserIdGoodsId,
+                userId + "_" + goodsId, SeckillOrderInfo.class);
     }
 
     /**
@@ -83,6 +88,9 @@ public class OrderService {
         seckillOrderInfo.setUserId(user.getId());
         seckillOrderInfo.setOrderId(orderId);
         orderDAO.addSeckillOrderInfo(seckillOrderInfo);
+
+        redisService.set(OrderKey.getSeckillOrderByUserIdGoodsId,
+                user.getId() + "_" + goodsVO.getId(), JSON.toJSONString(seckillOrderInfo));
 
         return orderInfo;
     }
